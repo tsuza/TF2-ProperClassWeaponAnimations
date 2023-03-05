@@ -15,14 +15,13 @@
 #define PLUGIN_NAME         "TF2-ProperClassWeaponAnimations"
 #define PLUGIN_AUTHOR       "Zabaniya001"
 #define PLUGIN_DESCRIPTION  "[TF2] Automatically set up the correct animations whenever a class is using a gun that isn't supposed to be used by them."
-#define PLUGIN_VERSION      "1.0.0"
 #define PLUGIN_URL          "https://github.com/Zabaniya001/TF2-ProperClassWeaponAnimations"
 
 public Plugin myinfo = {
     name        =   PLUGIN_NAME,
     author      =   PLUGIN_AUTHOR,
     description =   PLUGIN_DESCRIPTION,
-    version     =   PLUGIN_VERSION,
+    version     =   "1.0.0",
     url         =   PLUGIN_URL
 };
 
@@ -174,8 +173,6 @@ TFClassType original_class[36] = {TFClass_Unknown, ...};
 
 public MRESReturn DHook_TauntPre(int client, DHookParam hParams)
 {
-	PrintToChatAll("%i", hParams.Get(1));
-
 	//Dont allow taunting if disguised or cloaked
 	if (TF2_IsPlayerInCondition(client, TFCond_Disguising) || TF2_IsPlayerInCondition(client, TFCond_Disguised) || TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 		return MRES_Supercede;
