@@ -1,0 +1,45 @@
+name: Test Sourcemod compilation
+
+on:
+  pull_request:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set environment variables
+        run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
+
+      - name: Setup SourcePawn Compiler ${{ matrix.SM_VERSION }}
+        id: setup_sp
+        uses: rumblefrog/setup-sp@master
+        with:
+          version: "1.11.x"
+          version-file: ./scripting/TF2-ProperClassWeaponAnimations.sp
+
+      - name: Download SourcePawn plugin dependencies
+        uses: Zabaniya001/SPDependy@v1
+        with:
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Parse toml
+        uses: SebRollen/toml-action@v1.0.1
+        id: read_toml
+        with:
+          file: 'sp.toml'
+          field: 'Compile.plugins'
+
+      - name: Compile plugins
+        run: |
+          mkdir plugins
+          my_array=$(echo ${{ toJSON(steps.read_toml.outputs.value) }} | jq -r '.[]')
+          for plugin in $my_array; do
+            spcomp -w234 -O2 -v2 -i"scripting/include" -i".temp/include" -o"plugins/${plugin}.smx" "scripting/${plugin}.sp"
+          done
+        working-directory: ${{ env.SCRIPTS_PATH }}

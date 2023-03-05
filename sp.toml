@@ -1,0 +1,12 @@
+[Compile]
+plugins = [
+    "TF2-ProperClassWeaponAnimations"
+]
+
+[[dependency]]
+url = "https://github.com/nosoop/SM-TFEconData/blob/master/scripting/include/tf_econ_data.inc"
+path = "."
+
+[[dependency]]
+url = "https://github.com/nosoop/SM-TFUtils/tree/master/scripting/include"
+path = "."
