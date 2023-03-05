@@ -2,7 +2,7 @@ name: Compile and release
 
 on:
   push:
-    branches: main
+    branches: master
 
 jobs:
   build:
